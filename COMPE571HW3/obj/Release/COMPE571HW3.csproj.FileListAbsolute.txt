@@ -1,0 +1,5 @@
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Release\COMPE571HW3.exe.config
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Release\COMPE571HW3.exe
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Release\COMPE571HW3.pdb
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\obj\Release\COMPE571HW3.exe
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\obj\Release\COMPE571HW3.pdb

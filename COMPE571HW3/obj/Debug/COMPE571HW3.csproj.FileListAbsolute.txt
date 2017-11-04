@@ -1,0 +1,6 @@
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Debug\COMPE571HW3.exe.config
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Debug\COMPE571HW3.exe
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Debug\COMPE571HW3.pdb
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\obj\Debug\COMPE571HW3.csprojResolveAssemblyReference.cache
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\obj\Debug\COMPE571HW3.exe
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\obj\Debug\COMPE571HW3.pdb
