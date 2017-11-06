@@ -7,7 +7,7 @@ using System.IO;
 
 namespace COMPE571HW3
 {
-    class Program
+    class TaskScheduler
     {
         static void Main(string[] textFile)
         {
@@ -43,12 +43,16 @@ namespace COMPE571HW3
             Console.ReadLine();
         }
 
+        //Each Task Scheduler should call its own class to perform the scheduling alogrithm
         static void scheduleEDF(List<List<string>> data)
         {
             Console.WriteLine("Schedule EDF: ");
+            EDFScheduler EDFTask = new EDFScheduler();
+            EDFTask.EDFAnalysis(data);
 
         }
 
+        //Each Task Scheduler should call its own class to perform the scheduling alogrithm
         static void scheduleRM(List<List<string>> data)
         {
 
