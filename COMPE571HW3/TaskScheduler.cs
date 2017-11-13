@@ -33,27 +33,30 @@ namespace COMPE571HW3
 
             switch(schedulerType)
             {
-                case "EDF": scheduleEDF(data); break;
-                case "RM": scheduleRM(data); break;
+                case "EDF": ScheduleEDF(data); break;
+                case "RM": ScheduleRM(data); break;
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
 
+            Console.WriteLine("Processing and completing Schedule...");
 
             Console.WriteLine("\nPress Enter to exit:");
             Console.ReadLine();
         }
 
         //Each Task Scheduler should call its own class to perform the scheduling alogrithm
-        static void scheduleEDF(List<List<string>> data)
+        static void ScheduleEDF(List<List<string>> data)
         {
-            Console.WriteLine("Schedule EDF: ");
+            
             EDFScheduler EDFTask = new EDFScheduler();
             EDFTask.EDFAnalysis(data);
+            Console.WriteLine("Schedule EDF: ");
+            
 
         }
 
         //Each Task Scheduler should call its own class to perform the scheduling alogrithm
-        static void scheduleRM(List<List<string>> data)
+        static void ScheduleRM(List<List<string>> data)
         {
 
         }
