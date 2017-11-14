@@ -35,12 +35,22 @@ namespace COMPE571HW3
 
         
             int []arrayEDFSchedule = scheduleEDF(taskList);
-
+            int r = 0;
             for(int i = 0; i<1000; i++)
             {
-                Console.Write(arrayEDFSchedule[i]);
+                if(r < 50)
+                {
+                    Console.Write(arrayEDFSchedule[i] + " ");
+                }
+                else
+                {
+                    Console.WriteLine(arrayEDFSchedule[i]);
+                    r = 0;
+                }
+                r++;
             }
-            Console.WriteLine("finishedScheduler");
+
+            Console.WriteLine("\nfinishedScheduler");
         }
 
         /// <summary>
@@ -70,50 +80,67 @@ namespace COMPE571HW3
         {
             int []edfSchedule = new int[1000];
             int minDeadlineTask = int.MaxValue;
+            int taskCounter = 0;
+            int minDeadlineTaskNumber = 0;
+            int tempMinDeadlineTask = int.MaxValue;
 
-            for(int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                int taskCounter = 0;
-                int minDeadlineTaskNumber = 0;
+                taskCounter = 0;
+                minDeadlineTaskNumber = 0;
                 minDeadlineTask = int.MaxValue;
                 foreach (List<int> task in taskList)
                 {
-                    
-                    int tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
-                    if(minDeadlineTask > tempMinDeadlineTask)
+                    if (i < task[0])
                     {
-                        minDeadlineTask = tempMinDeadlineTask;
-                        minDeadlineTaskNumber = taskCounter;
-                    }
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                        if (minDeadlineTask > tempMinDeadlineTask)
+                        {
+                            minDeadlineTask = tempMinDeadlineTask;
+                            minDeadlineTaskNumber = taskCounter;
+                        }
 
-                    taskCounter++;
-
-                }
-
-                edfSchedule[i] = minDeadlineTaskNumber + 1;
-                if (taskList[minDeadlineTaskNumber][1] - 1 == 0)
-                {
-                    if (taskList[minDeadlineTaskNumber].Count > 2)
-                    {
-                        taskList[minDeadlineTaskNumber].RemoveRange(0,2);
+                        taskCounter++;
                     }
                     else
                     {
-                        taskList.RemoveAt(minDeadlineTaskNumber);
+                        taskCounter++;
                     }
+
+                }
+
+                if (!(minDeadlineTask == int.MaxValue))
+                {
+                    edfSchedule[i] = minDeadlineTaskNumber + 1;
+                    if (taskList[minDeadlineTaskNumber][1] - 1 == 0)
+                    {
+                        if (taskList[minDeadlineTaskNumber].Count > 2)
+                        {
+                            taskList[minDeadlineTaskNumber].RemoveRange(0, 2);
+                        }
+                        else
+                        {
+                            taskList.RemoveAt(minDeadlineTaskNumber);
+                        }
+
+                    }
+                    else
+                    {
+                        taskList[minDeadlineTaskNumber][1]--;
+                    }
+
 
                 }
                 else
                 {
-                    taskList[minDeadlineTaskNumber][1]--;
+                    edfSchedule[i] = -1;
                 }
 
-                if (taskList.Count == 0)
-                {
-                    i = 1000;
-                }
+                //if (taskList.Count == 0)
+                //{
+                //    i = 1000;
+                //}
 
-                
 
             }
 

@@ -11,3 +11,4 @@ F:\Fall 2017\Compe 571\Homework 3\COMPE571HW3\COMPE571HW3\bin\Debug\COMPE571HW3.
 F:\Fall 2017\Compe 571\Homework 3\COMPE571HW3\COMPE571HW3\bin\Debug\COMPE571HW3.pdb
 F:\Fall 2017\Compe 571\Homework 3\COMPE571HW3\COMPE571HW3\obj\Debug\COMPE571HW3.csprojResolveAssemblyReference.cache
 F:\Fall 2017\Compe 571\Homework 3\COMPE571HW3\COMPE571HW3\bin\Debug\input.txt
+D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Debug\input.txt

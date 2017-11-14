@@ -76,11 +76,16 @@ namespace COMPE571HW3
             foreach (List<string> s in data)
             {
                 List<int> tempList = new List<int>();
+
+                //Creating lists for each task with their deadlines and time to execute
+                //For the whole time sequence.
                 tempList.Add(Convert.ToInt32(s[1]));
                 tempList.Add(Convert.ToInt32(s[2]));
                 if(tempList[0] < 1000)
                 {
-                    for(int i = 2; i*tempList[0] <= 1000; i++)
+                    //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
+                    //each task in the 1000 seconds to run.
+                    for(int i = 2; i*tempList[0] < (1000 + tempList[0]); i++)
                     {
                         tempList.Add(tempList[0] * i);
                         tempList.Add(tempList[1]);
