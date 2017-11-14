@@ -80,8 +80,17 @@ namespace COMPE571HW3
                 List<int> tempList = new List<int>();
                 tempList.Add(Convert.ToInt32(s[1]));
                 tempList.Add(Convert.ToInt32(s[2]));
+                if(tempList[0] < 1000)
+                {
+                    for(int i = 2; i*tempList[0] <= 1000; i++)
+                    {
+                        tempList.Add(tempList[0] * i);
+                        tempList.Add(tempList[1]);
+                    }
+                }
                 TaskList.Add(tempList);
             }
+
             return TaskList;
         }
     }
