@@ -107,7 +107,7 @@ namespace COMPE571HW3
                         taskCounter++;
                     }
 
-                }
+                 }
 
                 if (!(minDeadlineTask == int.MaxValue))
                 {
