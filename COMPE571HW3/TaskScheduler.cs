@@ -13,7 +13,7 @@ namespace COMPE571HW3
         {
             //Comment these two lines out for running program from command line
             string schedulerType = "EDF";
-            textFile = System.IO.File.ReadAllLines(@"D:\Visual Studio\Projects\COMPE571HW3\COMPE571HW3\bin\Debug\input.txt");
+            textFile = System.IO.File.ReadAllLines(@"input.txt");
 
             //Used to hold all data from input file.
             List<List<string>> data = new List<List<string>>();
@@ -58,6 +58,8 @@ namespace COMPE571HW3
         //Each Task Scheduler should call its own class to perform the scheduling alogrithm
         static void ScheduleRM(List<List<string>> data)
         {
+
+
 
         }
     }
