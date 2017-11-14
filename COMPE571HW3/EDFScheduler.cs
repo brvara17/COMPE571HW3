@@ -31,7 +31,7 @@ namespace COMPE571HW3
             int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
 
 
-            var taskList = GetData(data);
+            var taskList = TaskScheduler.GetData(data);
 
         
             scheduleEDF(data);
