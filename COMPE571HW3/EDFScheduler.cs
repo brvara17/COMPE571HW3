@@ -31,12 +31,15 @@ namespace COMPE571HW3
             int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
 
 
-            var taskList = GetData(data);
+            var taskList = TaskScheduler.GetData(data);
 
         
-            scheduleEDF(data);
+            int []arrayEDFSchedule = scheduleEDF(taskList);
 
-
+            for(int i = 0; i<1000; i++)
+            {
+                Console.Write(arrayEDFSchedule[i]);
+            }
             Console.WriteLine("finishedScheduler");
         }
 
@@ -60,21 +63,61 @@ namespace COMPE571HW3
         }
 
 
-
-
-
         /// <summary>
         /// Schedules EDF for all tasks with time to execute 1000seconds.
         /// </summary>
-        private void scheduleEDF(List<List<string>> data)
+        private int[] scheduleEDF(List<List<int>> taskList)
         {
-            int []edfSchedule = new int[520];
+            int []edfSchedule = new int[1000];
+            int minDeadlineTask = int.MaxValue;
 
-            for(int i = 0; i < 520; i++)
+            for(int i = 0; i < 1000; i++)
             {
+                int taskCounter = 0;
+                int minDeadlineTaskNumber = 0;
+                minDeadlineTask = int.MaxValue;
+                foreach (List<int> task in taskList)
+                {
+                    
+                    int tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                    if(minDeadlineTask > tempMinDeadlineTask)
+                    {
+                        minDeadlineTask = tempMinDeadlineTask;
+                        minDeadlineTaskNumber = taskCounter;
+                    }
+
+                    taskCounter++;
+
+                }
+
+                edfSchedule[i] = minDeadlineTaskNumber + 1;
+                if (taskList[minDeadlineTaskNumber][1] - 1 == 0)
+                {
+                    if (taskList[minDeadlineTaskNumber].Count > 2)
+                    {
+                        taskList[minDeadlineTaskNumber].RemoveRange(0,2);
+                    }
+                    else
+                    {
+                        taskList.RemoveAt(minDeadlineTaskNumber);
+                    }
+
+                }
+                else
+                {
+                    taskList[minDeadlineTaskNumber][1]--;
+                }
+
+                if (taskList.Count == 0)
+                {
+                    i = 1000;
+                }
+
                 
 
             }
+
+            return edfSchedule;
         }
     }
 }
