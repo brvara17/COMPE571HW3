@@ -62,5 +62,25 @@ namespace COMPE571HW3
 
 
         }
+
+        /// <summary>
+        /// Takes in the data object that holds all values from input file and parses 
+        /// to get the Deadline and Execution Time
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static List<List<int>> GetData(List<List<string>> data)
+        {
+            List<List<int>> TaskList = new List<List<int>>();
+
+            foreach (List<string> s in data)
+            {
+                List<int> tempList = new List<int>();
+                tempList.Add(Convert.ToInt32(s[1]));
+                tempList.Add(Convert.ToInt32(s[2]));
+                TaskList.Add(tempList);
+            }
+            return TaskList;
+        }
     }
 }
