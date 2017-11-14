@@ -38,16 +38,17 @@ namespace COMPE571HW3
             int r = 0;
             for(int i = 0; i<1000; i++)
             {
-                if(r < 50)
-                {
-                    Console.Write(arrayEDFSchedule[i] + " ");
-                }
-                else
-                {
-                    Console.WriteLine(arrayEDFSchedule[i]);
-                    r = 0;
-                }
-                r++;
+                //if(r < 50)
+                //{
+                //    Console.Write(arrayEDFSchedule[i] + " ");
+                //}
+                //else
+                //{
+                //    Console.WriteLine(arrayEDFSchedule[i]);
+                //    r = 0;
+                //}
+                //r++;
+                Console.Write(arrayEDFSchedule[i]);
             }
 
             Console.WriteLine("\nfinishedScheduler");
@@ -83,16 +84,24 @@ namespace COMPE571HW3
             int taskCounter = 0;
             int minDeadlineTaskNumber = 0;
             int tempMinDeadlineTask = int.MaxValue;
+            int[] taskFirstRunThru = new int[5];
 
+
+            //Running through all 1000 seconds of execution time.
             for (int i = 0; i < 1000; i++)
             {
                 taskCounter = 0;
                 minDeadlineTaskNumber = 0;
                 minDeadlineTask = int.MaxValue;
+
+                //Checking all deadlines to determine which task has the earliest deadline 
+                //Held in task[0]
                 foreach (List<int> task in taskList)
                 {
+                    //TODO remove this statement
                     if (i < task[0])
                     {
+                        //Finds minDeadlineTask for all tasks in the system
                         tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
                         if (minDeadlineTask > tempMinDeadlineTask)
                         {
@@ -109,14 +118,24 @@ namespace COMPE571HW3
 
                 }
 
-                if (!(minDeadlineTask == int.MaxValue))
+                if(i == 599)
+                {
+                    Console.WriteLine("stop");
+                }
+
+                if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {
                     edfSchedule[i] = minDeadlineTaskNumber + 1;
+
+                    //if the task has no more time to be executed then remove that task from the system.
                     if (taskList[minDeadlineTaskNumber][1] - 1 == 0)
                     {
+                        //TODO Remove because shouldnt do anything
                         if (taskList[minDeadlineTaskNumber].Count > 2)
                         {
+                            //Removes task from system
                             taskList[minDeadlineTaskNumber].RemoveRange(0, 2);
+                            taskFirstRunThru[minDeadlineTaskNumber] = 1;
                         }
                         else
                         {
@@ -126,6 +145,7 @@ namespace COMPE571HW3
                     }
                     else
                     {
+                        //Subtract time to execute by 1 for task that just executed
                         taskList[minDeadlineTaskNumber][1]--;
                     }
 
@@ -133,6 +153,7 @@ namespace COMPE571HW3
                 }
                 else
                 {
+                    //If there isnt a task to be executed put in a -1;
                     edfSchedule[i] = -1;
                 }
 
