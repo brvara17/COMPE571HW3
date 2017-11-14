@@ -26,7 +26,15 @@ namespace COMPE571HW3
             data.RemoveAt(0);
 
             //Finding hyper period of all tasks in the system
-            int hyperPeriod = FindHyperPeriod(data);
+            //Defined as time to execute
+            int hyperPeriod = 1000;
+            int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
+
+
+            var taskList = GetData(data);
+
+        
+            scheduleEDF(data);
 
 
             Console.WriteLine("finishedScheduler");
@@ -41,12 +49,32 @@ namespace COMPE571HW3
         {
             int lcm = 1;
 
+            //Runs through each task in the system using the deadline of each
+            //task to find the hyperperiod using the lcm function.
             foreach(List<string> s in taskInfo)
             {
                 lcm = MathLCM.findLCM(lcm, Convert.ToInt32(s[1]));
             }
 
             return lcm;
+        }
+
+
+
+
+
+        /// <summary>
+        /// Schedules EDF for all tasks with time to execute 1000seconds.
+        /// </summary>
+        private void scheduleEDF(List<List<string>> data)
+        {
+            int []edfSchedule = new int[520];
+
+            for(int i = 0; i < 520; i++)
+            {
+                
+
+            }
         }
     }
 }
