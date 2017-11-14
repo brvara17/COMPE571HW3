@@ -12,7 +12,7 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "EDF";
+            string schedulerType = "RM";
             textFile = System.IO.File.ReadAllLines(@"input.txt");
 
             //Used to hold all data from input file.
@@ -59,7 +59,9 @@ namespace COMPE571HW3
         static void ScheduleRM(List<List<string>> data)
         {
 
-
+            RMScheduler RMTask = new RMScheduler();
+            RMTask.RMAnalysis(data);
+            Console.WriteLine("Schedule RM: ");
 
         }
 
