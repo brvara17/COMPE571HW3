@@ -58,13 +58,14 @@ namespace COMPE571HW3
             Console.WriteLine("Task   Frequency     Execution Time    Total Time    Energy Consumed(J)");
             for (int i = 0; i < timeToExecute; i++)
             {
-
+                //For each series found in the array counter++
                 if ((arrayEDFSchedule[i] == tempArrayEDF) || (tempArrayEDF == 0))
                 {
                     counter++;
                 }
                 else
                 {
+                    //Prints counter and total time to promptD
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
@@ -112,7 +113,7 @@ namespace COMPE571HW3
         /// <summary>
         /// Schedules EDF for all tasks with time to execute 1000seconds.
         /// </summary>
-        private int[] scheduleEDF(List<List<int>> taskList, int numberOfTasks, int timeToExecute)
+        public int[] scheduleEDF(List<List<int>> taskList, int numberOfTasks, int timeToExecute)
         {
             int []edfSchedule = new int[timeToExecute];
             int minDeadlineTask = int.MaxValue;
