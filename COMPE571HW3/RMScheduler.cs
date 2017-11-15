@@ -33,19 +33,55 @@ namespace COMPE571HW3
             int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
 
 
-            var taskList = TaskScheduler.GetData(data);
-            scheduleRM(taskList);
+            var taskList = GetData(data);
+            int[] scheduleArray = scheduleRM(taskList);
+            PrintEDFSchedule(scheduleArray, 1000);
 
             Console.Write(" Task List 0 of 0 =  " + taskList[0][1]);
 
             Console.WriteLine("finishedScheduler");
         }
 
-        private int[] scheduleRM(List<List<int>> data)
+        /// <summary>
+        /// Takes in the data object that holds all values from input file and parses 
+        /// to get the Deadline and Execution Time
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static List<List<int>> GetData(List<List<string>> data)
+        {
+            List<List<int>> TaskList = new List<List<int>>();
+
+            foreach (List<string> s in data)
+            {
+                List<int> tempList = new List<int>();
+
+                //Creating lists for each task with their deadlines and time to execute
+                //For the whole time sequence.
+                tempList.Add(Convert.ToInt32(s[1]));
+                tempList.Add(0);
+                tempList.Add(Convert.ToInt32(s[2]));
+                if (tempList[0] < 1000)
+                {
+                    //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
+                    //each task in the 1000 seconds to run.
+                    for (int i = 1; i * Convert.ToInt32(s[1]) < (1000 + Convert.ToInt32(s[1])); i++)
+                    {
+                        tempList.Add(Convert.ToInt32(s[1]) * i);
+                        tempList.Add(tempList[2]);
+                    }
+                }
+                TaskList.Add(tempList);
+            }
+
+            return TaskList;
+        }
+
+        private int[] scheduleRM(List<List<int>> taskList)
         {
             int[] edfSchedule = new int[1000];
             var rmSchedule = new int[1000];
-            int capacity = data.Capacity;
+            int capacity = taskList.Capacity;
 
             int compareFlag;
             List<int> taskTemp = new List<int>();
@@ -65,13 +101,13 @@ namespace COMPE571HW3
 
                 //Checking all deadlines to determine which task has the earliest deadline 
                 //Held in task[0]
-                foreach (List<int> task in data)
+                foreach (List<int> task in taskList)
                 {
-                    //TODO remove this statement
-                    if (i < task[2])
+                    //Statement determines
+                    if (i < task[1] && !(taskFirstRunThru[taskCounter] == 1) || i >= task[1])
                     {
                         //Finds minDeadlineTask for all tasks in the system
-                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[2]);
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
                         if (minDeadlineTask > tempMinDeadlineTask)
                         {
                             minDeadlineTask = tempMinDeadlineTask;
@@ -89,26 +125,77 @@ namespace COMPE571HW3
 
                 if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {
-                    edfSchedule[i] = minDeadlineTaskNumber + 1; //Min deadline task number + 1 => increments to the correct task running and adds to scheduled tasks
+                    rmSchedule[i] = minDeadlineTaskNumber + 1; //Min deadline task number + 1 => increments to the correct task running and adds to scheduled tasks
 
                     //if the task has no more time to be executed then remove that task from the system.
-                    if (data[minDeadlineTaskNumber][1] - 1 == 0) //grabs the tasks corresponding execution time
+                    if (taskList[minDeadlineTaskNumber][2] - 1 == 0) //grabs the tasks corresponding execution time
                     {
                         //Removes task from system
-                        data[minDeadlineTaskNumber].RemoveRange(1, 2);
-
+                        taskList[minDeadlineTaskNumber].RemoveRange(1, 2);
+                        taskFirstRunThru[minDeadlineTaskNumber] = 1;
                     }
                     else
                     {
                         //Subtract time to execute by 1 for task that just executed
-                        data[minDeadlineTaskNumber][1]--;
+                        taskList[minDeadlineTaskNumber][2]--;
                     }
 
 
                 }
+                else
+                {
+                    //If there isnt a task to be executed put in a -1;
+                    rmSchedule[i] = -1;
+                }
 
             }
-            return edfSchedule;
+            return rmSchedule;
         }
+
+        /// <summary>
+        /// Prints elements in array in following format:
+        /// Task    Frequency   Execution Time  Total Time
+        /// </summary>
+        /// <param name="arrayEDFSchedule"></param>
+        virtual public void PrintEDFSchedule(int[] arrayEDFSchedule, int timeToExecute)
+        {
+            int tempArrayEDF = 0;
+            int counter = -1;
+            int totalTime = 0;
+            Console.WriteLine("Task   Frequency     Execution Time    Total Time    Energy Consumed(J)");
+            for (int i = 0; i < timeToExecute; i++)
+            {
+                //For each series found in the array counter++
+                if ((arrayEDFSchedule[i] == tempArrayEDF) || (tempArrayEDF == 0))
+                {
+                    counter++;
+                }
+                else
+                {
+                    //Prints counter and total time to promptD
+                    counter++;
+                    totalTime += counter;
+                    if (tempArrayEDF == -1)
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);//TODO add dynamic J calc
+                    else
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
+                    counter = 0;
+                }
+                tempArrayEDF = arrayEDFSchedule[i];
+
+                //print last set for array
+                if (i == (timeToExecute - 1))
+                {
+                    counter++;
+                    totalTime += counter;
+                    if (tempArrayEDF == -1)
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);
+                    else
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
+                }
+            }
         }
+
+
     }
+}

@@ -12,8 +12,8 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "EDF EE";
-            textFile = System.IO.File.ReadAllLines(@"input.txt");
+            string schedulerType = "RM";
+            textFile = System.IO.File.ReadAllLines(@"input2.txt");
 
             //Used to hold all data from input file.
             List<List<string>> data = new List<List<string>>();
