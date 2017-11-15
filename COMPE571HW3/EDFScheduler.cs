@@ -84,7 +84,7 @@ namespace COMPE571HW3
             int taskCounter = 0;
             int minDeadlineTaskNumber = 0;
             int tempMinDeadlineTask = int.MaxValue;
-            int[] taskFirstRunThru = new int[5];
+            int []taskFirstRunThru = new int[5];
 
 
             //Running through all 1000 seconds of execution time.
@@ -99,10 +99,10 @@ namespace COMPE571HW3
                 foreach (List<int> task in taskList)
                 {
                     //TODO remove this statement
-                    if (i < task[0])
+                    if (i < task[0] && !(taskFirstRunThru[taskCounter] == 1) || i >= task[0])
                     {
                         //Finds minDeadlineTask for all tasks in the system
-                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[2]);
                         if (minDeadlineTask > tempMinDeadlineTask)
                         {
                             minDeadlineTask = tempMinDeadlineTask;
@@ -118,10 +118,11 @@ namespace COMPE571HW3
 
                 }
 
-                if(i == 599)
-                {
-                    Console.WriteLine("stop");
-                }
+                //For Debug purposes
+                //if(i == 955)
+                //{
+                //    Console.WriteLine("stop");
+                //}
 
                 if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {

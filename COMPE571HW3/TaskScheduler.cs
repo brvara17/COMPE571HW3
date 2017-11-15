@@ -33,7 +33,8 @@ namespace COMPE571HW3
 
             switch(schedulerType)
             {
-                case "EDF": ScheduleEDF(data); break;
+                case "EDF": ScheduleEDF(data); //TODO: impliment EDF utility equation check
+                    break;
                 case "RM": ScheduleRM(data); break;
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
@@ -81,15 +82,15 @@ namespace COMPE571HW3
 
                 //Creating lists for each task with their deadlines and time to execute
                 //For the whole time sequence.
-                tempList.Add(Convert.ToInt32(s[1]));
+                tempList.Add(0);
                 tempList.Add(Convert.ToInt32(s[2]));
                 if(tempList[0] < 1000)
                 {
                     //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
                     //each task in the 1000 seconds to run.
-                    for(int i = 2; i*tempList[0] < (1000 + tempList[0]); i++)
+                    for(int i = 1; i*Convert.ToInt32(s[1]) < (1000 + Convert.ToInt32(s[1])); i++)
                     {
-                        tempList.Add(tempList[0] * i);
+                        tempList.Add(Convert.ToInt32(s[1]) * i);
                         tempList.Add(tempList[1]);
                     }
                 }
