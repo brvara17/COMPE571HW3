@@ -22,44 +22,78 @@ namespace COMPE571HW3
             //<active power @ 1188 Mhz > < active power @ 918 Mhz > 
             //<active power @ 648 Mhz > < active power @ 384 Mhz > < idle power @ lowest frequency>
             var generalTaskInformaion = data[0];
-            Console.WriteLine("totalTasks = " + generalTaskInformaion[0]);
+
+            //Gets total number of tasks in the system.
+            var numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
+            Console.WriteLine("Total Tasks = " + generalTaskInformaion[0]);
             data.RemoveAt(0);
 
-            //Finding hyper period of all tasks in the system
+            //Number of tasks and Time to execute to be used in scheduling
             //Defined as time to execute
-            int hyperPeriod = 1000;
-            int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
 
+            var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
 
+            //Formats task data in usable format.
             var taskList = TaskScheduler.GetData(data);
 
-        
-            int []arrayEDFSchedule = scheduleEDF(taskList);
-            int r = 0;
-            for(int i = 0; i<1000; i++)
-            {
-                //if(r < 50)
-                //{
-                //    Console.Write(arrayEDFSchedule[i] + " ");
-                //}
-                //else
-                //{
-                //    Console.WriteLine(arrayEDFSchedule[i]);
-                //    r = 0;
-                //}
-                //r++;
-                Console.Write(arrayEDFSchedule[i]);
-            }
+            //Schedules all tasks in the system
+            int []arrayEDFSchedule = scheduleEDF(taskList, numberOfTasks, timeToExecute);
 
-            Console.WriteLine("\nfinishedScheduler");
+            //Prints scheduled tasks in readable format
+            PrintEDFSchedule(arrayEDFSchedule, timeToExecute);
+
+            Console.WriteLine("\nFinished EDF Scheduler");
         }
+
+        /// <summary>
+        /// Prints elements in array in following format:
+        /// Task    Frequency   Execution Time  Total Time
+        /// </summary>
+        /// <param name="arrayEDFSchedule"></param>
+        private void PrintEDFSchedule(int [] arrayEDFSchedule, int timeToExecute)
+        {
+            int tempArrayEDF = 0;
+            int counter = -1;
+            int totalTime = 0;
+            Console.WriteLine("Task   Frequency     Execution Time    Total Time");
+            for (int i = 0; i < timeToExecute; i++)
+            {
+
+                if ((arrayEDFSchedule[i] == tempArrayEDF) || (tempArrayEDF == 0))
+                {
+                    counter++;
+                }
+                else
+                {
+                    counter++;
+                    totalTime += counter;
+                    if (tempArrayEDF == -1)
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
+                    else
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
+                    counter = 0;
+                }
+                tempArrayEDF = arrayEDFSchedule[i];
+
+                //print last set for array
+                if (i == (timeToExecute-1))
+                {
+                    counter++;
+                    if (tempArrayEDF == -1)
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
+                    else
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Finds the hyper period for all tasks in the system
         /// </summary>
         /// <param name="taskInfo">All specfics related to each task</param>
         /// <returns>Hyper Period of all Tasks in the system</returns>
-        public int FindHyperPeriod(List<List<string>> taskInfo)
+        private int FindHyperPeriod(List<List<string>> taskInfo)
         {
             int lcm = 1;
 
@@ -77,18 +111,18 @@ namespace COMPE571HW3
         /// <summary>
         /// Schedules EDF for all tasks with time to execute 1000seconds.
         /// </summary>
-        private int[] scheduleEDF(List<List<int>> taskList)
+        private int[] scheduleEDF(List<List<int>> taskList, int numberOfTasks, int timeToExecute)
         {
-            int []edfSchedule = new int[1000];
+            int []edfSchedule = new int[timeToExecute];
             int minDeadlineTask = int.MaxValue;
             int taskCounter = 0;
             int minDeadlineTaskNumber = 0;
             int tempMinDeadlineTask = int.MaxValue;
-            int[] taskFirstRunThru = new int[5];
+            int []taskFirstRunThru = new int[numberOfTasks];
 
 
             //Running through all 1000 seconds of execution time.
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < timeToExecute; i++)
             {
                 taskCounter = 0;
                 minDeadlineTaskNumber = 0;
@@ -98,11 +132,11 @@ namespace COMPE571HW3
                 //Held in task[0]
                 foreach (List<int> task in taskList)
                 {
-                    //TODO remove this statement
-                    if (i < task[0])
+                    //Checks if task needs to execute or be skippd because it hasnt come in yet
+                    if (i < task[0] && !(taskFirstRunThru[taskCounter] == 1) || i >= task[0])
                     {
                         //Finds minDeadlineTask for all tasks in the system
-                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[2]);
                         if (minDeadlineTask > tempMinDeadlineTask)
                         {
                             minDeadlineTask = tempMinDeadlineTask;
@@ -118,11 +152,7 @@ namespace COMPE571HW3
 
                  }
 
-                if(i == 599)
-                {
-                    Console.WriteLine("stop");
-                }
-
+                //If no task had been scheduled add -1 to the schedule to key the processor is in idle
                 if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {
                     edfSchedule[i] = minDeadlineTaskNumber + 1;
@@ -149,7 +179,6 @@ namespace COMPE571HW3
                         taskList[minDeadlineTaskNumber][1]--;
                     }
 
-
                 }
                 else
                 {
@@ -157,15 +186,11 @@ namespace COMPE571HW3
                     edfSchedule[i] = -1;
                 }
 
-                //if (taskList.Count == 0)
-                //{
-                //    i = 1000;
-                //}
-
-
             }
 
             return edfSchedule;
         }
+
+        
     }
 }

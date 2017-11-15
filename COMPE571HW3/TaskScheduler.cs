@@ -33,12 +33,25 @@ namespace COMPE571HW3
 
             switch(schedulerType)
             {
-                case "EDF": ScheduleEDF(data); break;
-                case "RM": ScheduleRM(data); break;
+                case "EDF":
+                    {
+                        if (CheckEDF(data))
+                        {
+                            ScheduleEDF(data); 
+                        }
+                        else
+                        {
+                            Console.WriteLine("EDF cannot be scheduled.");
+                        }
+                        break;
+                    }
+                case "RM":
+                    {
+                        ScheduleRM(data);
+                        break;
+                    }
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
-
-            Console.WriteLine("Processing and completing Schedule...");
 
             Console.WriteLine("\nPress Enter to exit:");
             Console.ReadLine();
@@ -81,15 +94,15 @@ namespace COMPE571HW3
 
                 //Creating lists for each task with their deadlines and time to execute
                 //For the whole time sequence.
-                tempList.Add(Convert.ToInt32(s[1]));
+                tempList.Add(0);
                 tempList.Add(Convert.ToInt32(s[2]));
                 if(tempList[0] < 1000)
                 {
                     //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
                     //each task in the 1000 seconds to run.
-                    for(int i = 2; i*tempList[0] < (1000 + tempList[0]); i++)
+                    for(int i = 1; i*Convert.ToInt32(s[1]) < (1000 + Convert.ToInt32(s[1])); i++)
                     {
-                        tempList.Add(tempList[0] * i);
+                        tempList.Add(Convert.ToInt32(s[1]) * i);
                         tempList.Add(tempList[1]);
                     }
                 }
@@ -97,6 +110,24 @@ namespace COMPE571HW3
             }
 
             return TaskList;
+        }
+
+        public static bool CheckEDF(List<List<string>> data)
+        {
+            double sum = 0;
+
+            for(int i = 1; i < data.Count; i++)
+            {
+                List<string> s = data[i];
+                sum += Convert.ToDouble(s[2]) / Convert.ToDouble(s[1]);
+            }
+
+            //If sum <=1 then the EDF cannot be scheduled
+            if (sum <= 1)
+                return true;
+            else
+                return false;
+
         }
     }
 }
