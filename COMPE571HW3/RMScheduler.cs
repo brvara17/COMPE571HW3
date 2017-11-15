@@ -34,21 +34,37 @@ namespace COMPE571HW3
 
 
             var taskList = TaskScheduler.GetData(data);
+            scheduleRM(taskList);
 
             Console.Write(" Task List 0 of 0 =  " + taskList[0][1]);
 
             Console.WriteLine("finishedScheduler");
         }
 
-        private void scheduleRM(List<List<string>> data)
+        private void scheduleRM(List<List<int>> data)
         {
             var rmSchedule = new int[1000];
+            int capacity = data.Capacity;
+            int i = 0;
+            int compareFlag;
+            List<int> taskTemp = new List<int>();
 
-            for (int i = 0; i < 1000; i++)
+            foreach (List<int> task in data)
             {
-
+                if (task[0] < data[i + 2][0])
+                {
+                    taskTemp.Add(task[0]);
+                    taskTemp.Add(task[1]);
+                }
 
             }
+
+            //for (int i = 0; i < 1000; i++)
+            //{
+              
+
+
+            //}
         }
     }
 }

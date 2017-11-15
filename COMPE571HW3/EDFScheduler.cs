@@ -116,7 +116,7 @@ namespace COMPE571HW3
                         taskCounter++;
                     }
 
-                }
+                 }
 
                 //For Debug purposes
                 //if(i == 955)
