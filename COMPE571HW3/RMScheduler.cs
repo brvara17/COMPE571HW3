@@ -68,10 +68,10 @@ namespace COMPE571HW3
                 foreach (List<int> task in data)
                 {
                     //TODO remove this statement
-                    if (i < task[0])
+                    if (i < task[2])
                     {
                         //Finds minDeadlineTask for all tasks in the system
-                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[2]);
                         if (minDeadlineTask > tempMinDeadlineTask)
                         {
                             minDeadlineTask = tempMinDeadlineTask;
@@ -89,13 +89,13 @@ namespace COMPE571HW3
 
                 if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {
-                    edfSchedule[i] = minDeadlineTaskNumber + 1;
+                    edfSchedule[i] = minDeadlineTaskNumber + 1; //Min deadline task number + 1 => increments to the correct task running and adds to scheduled tasks
 
                     //if the task has no more time to be executed then remove that task from the system.
                     if (data[minDeadlineTaskNumber][1] - 1 == 0) //grabs the tasks corresponding execution time
                     {
                         //Removes task from system
-                        data[minDeadlineTaskNumber].RemoveRange(0, 2);
+                        data[minDeadlineTaskNumber].RemoveRange(1, 2);
 
                     }
                     else
