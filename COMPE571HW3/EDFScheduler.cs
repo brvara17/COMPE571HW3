@@ -22,13 +22,15 @@ namespace COMPE571HW3
             //<active power @ 1188 Mhz > < active power @ 918 Mhz > 
             //<active power @ 648 Mhz > < active power @ 384 Mhz > < idle power @ lowest frequency>
             var generalTaskInformaion = data[0];
-            Console.WriteLine("totalTasks = " + generalTaskInformaion[0]);
-            
+
+            //Gets total number of tasks in the system.
+            var numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
+            Console.WriteLine("Total Tasks = " + generalTaskInformaion[0]);
             data.RemoveAt(0);
 
             //Number of tasks and Time to execute to be used in scheduling
             //Defined as time to execute
-            int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
+
             var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
 
             //Formats task data in usable format.
@@ -40,7 +42,7 @@ namespace COMPE571HW3
             //Prints scheduled tasks in readable format
             PrintEDFSchedule(arrayEDFSchedule, timeToExecute);
 
-            Console.WriteLine("\nfinishedScheduler");
+            Console.WriteLine("\nFinished EDF Scheduler");
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace COMPE571HW3
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  1188MHz              " + counter + "            " + totalTime);
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
                     else
                         Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
                     counter = 0;
@@ -77,8 +79,10 @@ namespace COMPE571HW3
                 if (i == (timeToExecute-1))
                 {
                     counter++;
-                    totalTime += counter;
-                    Console.WriteLine("IDLE" + "  1188MHz              " + counter + "            " + totalTime);
+                    if (tempArrayEDF == -1)
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
+                    else
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
                 }
             }
         }
@@ -89,7 +93,7 @@ namespace COMPE571HW3
         /// </summary>
         /// <param name="taskInfo">All specfics related to each task</param>
         /// <returns>Hyper Period of all Tasks in the system</returns>
-        public int FindHyperPeriod(List<List<string>> taskInfo)
+        private int FindHyperPeriod(List<List<string>> taskInfo)
         {
             int lcm = 1;
 
@@ -148,12 +152,7 @@ namespace COMPE571HW3
 
                  }
 
-                //For Debug purposes
-                //if(i == 955)
-                //{
-                //    Console.WriteLine("stop");
-                //}
-
+                //If no task had been scheduled add -1 to the schedule to key the processor is in idle
                 if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
                 {
                     edfSchedule[i] = minDeadlineTaskNumber + 1;
@@ -191,5 +190,7 @@ namespace COMPE571HW3
 
             return edfSchedule;
         }
+
+        
     }
 }
