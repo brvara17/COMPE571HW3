@@ -41,30 +41,74 @@ namespace COMPE571HW3
             Console.WriteLine("finishedScheduler");
         }
 
-        private void scheduleRM(List<List<int>> data)
+        private int[] scheduleRM(List<List<int>> data)
         {
+            int[] edfSchedule = new int[1000];
             var rmSchedule = new int[1000];
             int capacity = data.Capacity;
-            int i = 0;
+
             int compareFlag;
             List<int> taskTemp = new List<int>();
+            int minDeadlineTaskNumber = 0;
+            int minDeadlineTask = int.MaxValue;
+            int tempMinDeadlineTask = int.MaxValue;
+            int taskCounter = 0;
+            int[] taskFirstRunThru = new int[5];
 
-            foreach (List<int> task in data)
+            //Checking all deadlines to determine which task has the earliest deadline 
+            //Held in task[0]
+            for (int i = 0; i < 1000; i++)
             {
-                if (task[0] < data[i + 2][0])
+                taskCounter = 0;
+                minDeadlineTaskNumber = 0;
+                minDeadlineTask = int.MaxValue;
+
+                //Checking all deadlines to determine which task has the earliest deadline 
+                //Held in task[0]
+                foreach (List<int> task in data)
                 {
-                    taskTemp.Add(task[0]);
-                    taskTemp.Add(task[1]);
+                    //TODO remove this statement
+                    if (i < task[0])
+                    {
+                        //Finds minDeadlineTask for all tasks in the system
+                        tempMinDeadlineTask = Math.Min(minDeadlineTask, task[0]);
+                        if (minDeadlineTask > tempMinDeadlineTask)
+                        {
+                            minDeadlineTask = tempMinDeadlineTask;
+                            minDeadlineTaskNumber = taskCounter;
+                        }
+
+                        taskCounter++;
+                    }
+                    else
+                    {
+                        taskCounter++;
+                    }
+
+                }
+
+                if (!(minDeadlineTask == int.MaxValue)) //&& !((taskFirstRunThru[minDeadlineTaskNumber] == 1) && (i < taskList[minDeadlineTaskNumber][0])))
+                {
+                    edfSchedule[i] = minDeadlineTaskNumber + 1;
+
+                    //if the task has no more time to be executed then remove that task from the system.
+                    if (data[minDeadlineTaskNumber][1] - 1 == 0) //grabs the tasks corresponding execution time
+                    {
+                        //Removes task from system
+                        data[minDeadlineTaskNumber].RemoveRange(0, 2);
+
+                    }
+                    else
+                    {
+                        //Subtract time to execute by 1 for task that just executed
+                        data[minDeadlineTaskNumber][1]--;
+                    }
+
+
                 }
 
             }
-
-            //for (int i = 0; i < 1000; i++)
-            //{
-              
-
-
-            //}
+            return edfSchedule;
+        }
         }
     }
-}
