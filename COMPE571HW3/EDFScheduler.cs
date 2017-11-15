@@ -36,19 +36,20 @@ namespace COMPE571HW3
         
             int []arrayEDFSchedule = scheduleEDF(taskList);
             int r = 0;
+            int tempArrayEDF = arrayEDFSchedule[0];
+            int counter = 0;
+            Console.WriteLine("Task     Frequency       Execution Time");
             for(int i = 0; i<1000; i++)
             {
-                //if(r < 50)
-                //{
-                //    Console.Write(arrayEDFSchedule[i] + " ");
-                //}
-                //else
-                //{
-                //    Console.WriteLine(arrayEDFSchedule[i]);
-                //    r = 0;
-                //}
-                //r++;
-                Console.Write(arrayEDFSchedule[i]);
+                if(arrayEDFSchedule[i] == tempArrayEDF)
+                    counter++;
+                else
+                {
+                    counter = 0;
+                    Console.WriteLine("w" + tempArrayEDF + "    1188MHz     " + counter);
+                }
+                tempArrayEDF = arrayEDFSchedule[i];
+                //Console.Write(arrayEDFSchedule[i]);
             }
 
             Console.WriteLine("\nfinishedScheduler");
@@ -98,7 +99,7 @@ namespace COMPE571HW3
                 //Held in task[0]
                 foreach (List<int> task in taskList)
                 {
-                    //TODO remove this statement
+                    //Checks if task needs to execute or be skippd because it hasnt come in yet
                     if (i < task[0] && !(taskFirstRunThru[taskCounter] == 1) || i >= task[0])
                     {
                         //Finds minDeadlineTask for all tasks in the system
