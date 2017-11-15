@@ -12,7 +12,7 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "RM";
+            string schedulerType = "EDF EE";
             textFile = System.IO.File.ReadAllLines(@"input.txt");
 
             //Used to hold all data from input file.
@@ -50,6 +50,18 @@ namespace COMPE571HW3
                         ScheduleRM(data);
                         break;
                     }
+                case "EDF EE":
+                    {
+                        if (CheckEDF(data))
+                        {
+                            ScheduleEDFEE(data);
+                        }
+                        else
+                        {
+                            Console.WriteLine("EDF cannot be scheduled.");
+                        }
+                        break;
+                    }
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
 
@@ -75,6 +87,17 @@ namespace COMPE571HW3
             RMScheduler RMTask = new RMScheduler();
             RMTask.RMAnalysis(data);
             Console.WriteLine("Schedule RM: ");
+
+        }
+
+        //Each Task Scheduler should call its own class to perform the scheduling alogrithm
+        static void ScheduleEDFEE(List<List<string>> data)
+        {
+
+            EDFEEScheduler EDFEETask = new EDFEEScheduler();
+            EDFEETask.EDFEEAnalysis(data);
+            Console.WriteLine("Schedule EDF EE: ");
+
 
         }
 

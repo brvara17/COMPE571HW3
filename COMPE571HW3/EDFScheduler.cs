@@ -50,27 +50,28 @@ namespace COMPE571HW3
         /// Task    Frequency   Execution Time  Total Time
         /// </summary>
         /// <param name="arrayEDFSchedule"></param>
-        private void PrintEDFSchedule(int [] arrayEDFSchedule, int timeToExecute)
+        virtual public void PrintEDFSchedule(int [] arrayEDFSchedule, int timeToExecute)
         {
             int tempArrayEDF = 0;
             int counter = -1;
             int totalTime = 0;
-            Console.WriteLine("Task   Frequency     Execution Time    Total Time");
+            Console.WriteLine("Task   Frequency     Execution Time    Total Time    Energy Consumed(J)");
             for (int i = 0; i < timeToExecute; i++)
             {
-
+                //For each series found in the array counter++
                 if ((arrayEDFSchedule[i] == tempArrayEDF) || (tempArrayEDF == 0))
                 {
                     counter++;
                 }
                 else
                 {
+                    //Prints counter and total time to promptD
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter*0.084);//TODO add dynamic J calc
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
                     counter = 0;
                 }
                 tempArrayEDF = arrayEDFSchedule[i];
@@ -79,10 +80,11 @@ namespace COMPE571HW3
                 if (i == (timeToExecute-1))
                 {
                     counter++;
+                    totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime);
+                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime);
+                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
                 }
             }
         }
@@ -111,7 +113,7 @@ namespace COMPE571HW3
         /// <summary>
         /// Schedules EDF for all tasks with time to execute 1000seconds.
         /// </summary>
-        private int[] scheduleEDF(List<List<int>> taskList, int numberOfTasks, int timeToExecute)
+        public int[] scheduleEDF(List<List<int>> taskList, int numberOfTasks, int timeToExecute)
         {
             int []edfSchedule = new int[timeToExecute];
             int minDeadlineTask = int.MaxValue;
