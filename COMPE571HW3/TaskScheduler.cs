@@ -65,7 +65,7 @@ namespace COMPE571HW3
                         }
                         else
                         {
-                            Console.WriteLine("EDF cannot be scheduled.");
+                            Console.WriteLine("EDF EE cannot be scheduled.");
                         }
                         break;
                     }
