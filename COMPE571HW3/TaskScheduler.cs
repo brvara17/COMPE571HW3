@@ -84,6 +84,18 @@ namespace COMPE571HW3
                         }
                         break;
                     }
+                case "RM EE":
+                    {
+                        if (CheckRM(data))
+                        {
+                            ScheduleRMEE(data);
+                        }
+                        else
+                        {
+                            Console.WriteLine("RM EE cannot be scheduled.");
+                        }
+                        break;
+                    }
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
 
@@ -116,6 +128,16 @@ namespace COMPE571HW3
 
             EDFEEScheduler EDFEETask = new EDFEEScheduler();
             EDFEETask.EDFEEAnalysis(data);
+
+
+        }
+
+        //Each Task Scheduler should call its own class to perform the scheduling alogrithm
+        static void ScheduleRMEE(List<List<string>> data)
+        {
+
+            RMEEScheduler RMEETask = new RMEEScheduler();
+            RMEETask.RMEEAnalysis(data);
 
 
         }

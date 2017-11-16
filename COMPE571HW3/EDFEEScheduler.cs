@@ -243,8 +243,8 @@ namespace COMPE571HW3
             int tempArrayEDF = 0;
             int counter = -1;
             int totalTime = 0;
-            double activePower;
-            double energyConsumption;
+            double activePower = 0;
+            double energyConsumption = 0;
             double totalEnergyConsumption = 0;
             double totalIdleTime = 0;
 
@@ -262,12 +262,16 @@ namespace COMPE571HW3
                     counter++;
                     totalTime += counter;
 
-                    List<int> tempCPUList = listCPUPowerPerTask[tempArrayEDF-1];
-                    int col = listTaskETUsed[tempArrayEDF-1][1];
-                    col = listCPUPowerPerTask[tempArrayEDF-1].IndexOf(col);
-                    activePower = listCPUPowerPerTask[5][col];
-                    energyConsumption = activePower / timeToExecute;
-                    
+                    int col = 0;
+                    List<int> tempCPUList;
+                    if (tempArrayEDF != -1)
+                    {
+                        tempCPUList = listCPUPowerPerTask[tempArrayEDF - 1];
+                        col = listTaskETUsed[tempArrayEDF - 1][1];
+                        col = listCPUPowerPerTask[tempArrayEDF - 1].IndexOf(col);
+                        activePower = listCPUPowerPerTask[5][col];
+                        energyConsumption = activePower / timeToExecute;
+                    }
 
                     if (tempArrayEDF == -1)
                     {
