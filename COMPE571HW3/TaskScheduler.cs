@@ -12,7 +12,7 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "EDF EE";
+            string schedulerType = "RM EE";
             textFile = System.IO.File.ReadAllLines(@"input2.txt");
 
             //Used to hold all data from input file.
@@ -69,6 +69,18 @@ namespace COMPE571HW3
                         }
                         break;
                     }
+                case "RM EE":
+                    {
+                        if (CheckRM(data))
+                        {
+                            ScheduleRMEE(data);
+                        }
+                        else
+                        {
+                            Console.WriteLine("RM EE cannot be scheduled.");
+                        }
+                        break;
+                    }
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
 
@@ -82,7 +94,7 @@ namespace COMPE571HW3
             
             EDFScheduler EDFTask = new EDFScheduler();
             EDFTask.EDFAnalysis(data);
-            Console.WriteLine("Schedule EDF: ");
+            //Console.WriteLine("Schedule EDF: ");
             
 
         }
@@ -93,7 +105,7 @@ namespace COMPE571HW3
 
             RMScheduler RMTask = new RMScheduler();
             RMTask.RMAnalysis(data);
-            Console.WriteLine("Schedule RM: ");
+            //Console.WriteLine("Schedule RM: ");
 
         }
 
@@ -103,7 +115,18 @@ namespace COMPE571HW3
 
             EDFEEScheduler EDFEETask = new EDFEEScheduler();
             EDFEETask.EDFEEAnalysis(data);
-            Console.WriteLine("Schedule EDF EE: ");
+            //Console.WriteLine("Schedule EDF EE: ");
+
+
+        }
+
+        //Each Task Scheduler should call its own class to perform the scheduling alogrithm
+        static void ScheduleRMEE(List<List<string>> data)
+        {
+
+            RMEEScheduler RMEETask = new RMEEScheduler();
+            RMEETask.RMEEAnalysis(data);
+            //Console.WriteLine("Schedule EDF EE: ");
 
 
         }

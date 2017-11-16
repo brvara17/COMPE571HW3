@@ -46,6 +46,7 @@
     <Compile Include="EDFEEScheduler.cs" />
     <Compile Include="EDFScheduler.cs" />
     <Compile Include="MathLCM.cs" />
+    <Compile Include="RMEEScheduler.cs" />
     <Compile Include="RMScheduler.cs" />
     <Compile Include="TaskScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
