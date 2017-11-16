@@ -27,19 +27,21 @@ namespace COMPE571HW3
             Console.WriteLine("totalTasks = " + generalTaskInformaion[0]);
             data.RemoveAt(0);
 
+            //Number of tasks and Time to execute to be used in scheduling
+            //Defined as time to execute
+            var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
+
             //Finding hyper period of all tasks in the system
             //Defined as time to execute
-            int hyperPeriod = 1000;
+            int hyperPeriod = timeToExecute;
             int numberOfTasks = Convert.ToInt32(generalTaskInformaion[0]);
 
 
-            var taskList = GetData(data);
-            int[] scheduleArray = scheduleRM(taskList);
-            PrintEDFSchedule(scheduleArray, 1000);
+            var taskList = GetData(data, timeToExecute);
+            int[] scheduleArray = scheduleRM(taskList, timeToExecute);
+            PrintEDFSchedule(scheduleArray, timeToExecute);
 
-            Console.Write(" Task List 0 of 0 =  " + taskList[0][1]);
-
-            Console.WriteLine("finishedScheduler");
+            Console.WriteLine("\nFinished RM Scheduler!");
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace COMPE571HW3
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<List<int>> GetData(List<List<string>> data)
+        public static List<List<int>> GetData(List<List<string>> data, int timeToExecute)
         {
             List<List<int>> TaskList = new List<List<int>>();
 
@@ -61,11 +63,11 @@ namespace COMPE571HW3
                 tempList.Add(Convert.ToInt32(s[1]));
                 tempList.Add(0);
                 tempList.Add(Convert.ToInt32(s[2]));
-                if (tempList[0] < 1000)
+                if (tempList[0] < timeToExecute)
                 {
                     //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
                     //each task in the 1000 seconds to run.
-                    for (int i = 1; i * Convert.ToInt32(s[1]) < (1000 + Convert.ToInt32(s[1])); i++)
+                    for (int i = 1; i * Convert.ToInt32(s[1]) < (timeToExecute + Convert.ToInt32(s[1])); i++)
                     {
                         tempList.Add(Convert.ToInt32(s[1]) * i);
                         tempList.Add(tempList[2]);
@@ -77,12 +79,11 @@ namespace COMPE571HW3
             return TaskList;
         }
 
-        private int[] scheduleRM(List<List<int>> taskList)
+        private int[] scheduleRM(List<List<int>> taskList, int timeToExecute)
         {
-            int[] edfSchedule = new int[1000];
-            var rmSchedule = new int[1000];
+            //int[] edfSchedule = new int[timeToExecute];
+            var rmSchedule = new int[timeToExecute];
             int capacity = taskList.Capacity;
-
             int compareFlag;
             List<int> taskTemp = new List<int>();
             int minDeadlineTaskNumber = 0;
@@ -93,7 +94,7 @@ namespace COMPE571HW3
 
             //Checking all deadlines to determine which task has the earliest deadline 
             //Held in task[0]
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < timeToExecute; i++)
             {
                 taskCounter = 0;
                 minDeadlineTaskNumber = 0;
@@ -161,8 +162,12 @@ namespace COMPE571HW3
         {
             int tempArrayEDF = 0;
             int counter = -1;
-            int totalTime = 0;
-            Console.WriteLine("Task   Frequency     Execution Time    Total Time    Energy Consumed(J)");
+            double totalTime = 0;
+            double idleTime = 0;
+            double totalEnergyConsumption = 0;
+            double totalExecutionTime = 0;
+
+            Console.WriteLine("Task\t\t Frequency\t\t Execution Time\t\t Total Time\t\t Energy Consumed(J)");
             for (int i = 0; i < timeToExecute; i++)
             {
                 //For each series found in the array counter++
@@ -176,10 +181,19 @@ namespace COMPE571HW3
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);//TODO add dynamic J calc
+                    {
+                        idleTime += counter;
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.084);
+                        Console.WriteLine("IDLE\t\t " + "IDLE\t" + "\t\t " + counter + " \t\t\t" + totalTime + "\t\t\t" + counter * 0.084);//TODO add dynamic J calc
+                    }
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
-                    counter = 0;
+                    {
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.625);
+                        Console.WriteLine("w" + tempArrayEDF + "\t\t1188MHz " + "\t\t " + counter + " \t\t\t " + totalTime + "\t\t\t" + counter * 0.625);
+                    }
+                        counter = 0;
                 }
                 tempArrayEDF = arrayEDFSchedule[i];
 
@@ -189,11 +203,27 @@ namespace COMPE571HW3
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);
+                    {
+                        idleTime += counter;
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.084);
+                        Console.WriteLine("IDLE\t\t " + "IDLE\t" + "\t\t" + counter + " \t\t\t" + totalTime + "\t\t\t" + counter * 0.084);//TODO add dynamic J calc
+                    }
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
+                    {
+                        totalEnergyConsumption += (counter * 0.625);
+                        totalExecutionTime += counter;
+                        Console.WriteLine("w" + tempArrayEDF + "\t\t1188MHz " + "\t\t" + counter + " \t\t\t " + totalTime + "\t\t\t" + counter * 0.625);
+                    }
+
                 }
             }
+            Console.WriteLine("\nTotal Energy Consumption After Completion: " + totalEnergyConsumption );
+            Console.WriteLine("Total Execution Time: " + totalExecutionTime);
+            Console.WriteLine("IDLE % TIME IN THE SYSTEM: " + (100 * (float)idleTime/timeToExecute) + "%\n");
+           
+
+
         }
 
 

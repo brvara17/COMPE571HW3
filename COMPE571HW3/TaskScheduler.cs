@@ -12,8 +12,8 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "RM";
-            textFile = System.IO.File.ReadAllLines(@"input2.txt");
+            string schedulerType = "EDF";
+            textFile = System.IO.File.ReadAllLines(@"input.txt");
 
             //Used to hold all data from input file.
             List<List<string>> data = new List<List<string>>();
@@ -65,7 +65,7 @@ namespace COMPE571HW3
                 default: Console.WriteLine("Could not find the correct scheduler."); break;
             }
 
-            Console.WriteLine("\nPress Enter to exit:");
+            Console.WriteLine("\n\nPress Enter to exit:");
             Console.ReadLine();
         }
 
@@ -107,7 +107,7 @@ namespace COMPE571HW3
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static List<List<int>> GetData(List<List<string>> data)
+        public static List<List<int>> GetData(List<List<string>> data, int timeToExecute)
         {
             List<List<int>> TaskList = new List<List<int>>();
 
@@ -119,11 +119,11 @@ namespace COMPE571HW3
                 //For the whole time sequence.
                 tempList.Add(0);
                 tempList.Add(Convert.ToInt32(s[2]));
-                if(tempList[0] < 1000)
+                if(tempList[0] < timeToExecute)
                 {
                     //This new equation adds the ending task deadline even if it is over 1000 because it is still used to schedule 
                     //each task in the 1000 seconds to run.
-                    for(int i = 1; i*Convert.ToInt32(s[1]) < (1000 + Convert.ToInt32(s[1])); i++)
+                    for(int i = 1; i*Convert.ToInt32(s[1]) < (timeToExecute + Convert.ToInt32(s[1])); i++)
                     {
                         tempList.Add(Convert.ToInt32(s[1]) * i);
                         tempList.Add(tempList[1]);

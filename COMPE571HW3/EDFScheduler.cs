@@ -34,7 +34,7 @@ namespace COMPE571HW3
             var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
 
             //Formats task data in usable format.
-            var taskList = TaskScheduler.GetData(data);
+            var taskList = TaskScheduler.GetData(data, timeToExecute);
 
             //Schedules all tasks in the system
             int []arrayEDFSchedule = scheduleEDF(taskList, numberOfTasks, timeToExecute);
@@ -54,8 +54,12 @@ namespace COMPE571HW3
         {
             int tempArrayEDF = 0;
             int counter = -1;
-            int totalTime = 0;
-            Console.WriteLine("Task   Frequency     Execution Time    Total Time    Energy Consumed(J)");
+            double totalTime = 0;
+            double idleTime = 0;
+            double totalEnergyConsumption = 0;
+            double totalExecutionTime = 0;
+
+            Console.WriteLine("Task\t\t Frequency\t\t Execution Time\t\t Total Time\t\t Energy Consumed(J)");
             for (int i = 0; i < timeToExecute; i++)
             {
                 //For each series found in the array counter++
@@ -69,24 +73,49 @@ namespace COMPE571HW3
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter*0.084);//TODO add dynamic J calc
+                    {
+                        idleTime += counter;
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.084);
+                        Console.WriteLine("IDLE\t\t " + "IDLE\t" + "\t\t " + counter + " \t\t\t" + totalTime + "\t\t\t" + counter * 0.084);//TODO add dynamic J calc
+                    }
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
+                    {
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.625);
+                        Console.WriteLine("w" + tempArrayEDF + "\t\t1188MHz " + "\t\t " + counter + " \t\t\t " + totalTime + "\t\t\t" + counter * 0.625);
+                    }
                     counter = 0;
                 }
                 tempArrayEDF = arrayEDFSchedule[i];
 
                 //print last set for array
-                if (i == (timeToExecute-1))
+                if (i == (timeToExecute - 1))
                 {
                     counter++;
                     totalTime += counter;
                     if (tempArrayEDF == -1)
-                        Console.WriteLine("IDLE" + "  IDLE                  " + counter + "            " + totalTime + "            " + counter * 0.084);
+                    {
+                        idleTime += counter;
+                        totalExecutionTime += counter;
+                        totalEnergyConsumption += (counter * 0.084);
+                        Console.WriteLine("IDLE\t\t " + "IDLE\t" + "\t\t" + counter + " \t\t\t" + totalTime + "\t\t\t" + counter * 0.084);//TODO add dynamic J calc
+                    }
                     else
-                        Console.WriteLine("w" + tempArrayEDF + "    1188MHz              " + counter + "            " + totalTime + "           " + counter * 0.625);
+                    {
+                        totalEnergyConsumption += (counter * 0.625);
+                        totalExecutionTime += counter;
+                        Console.WriteLine("w" + tempArrayEDF + "\t\t1188MHz " + "\t\t" + counter + " \t\t\t " + totalTime + "\t\t\t" + counter * 0.625);
+                    }
+
                 }
             }
+            Console.WriteLine("\nTotal Energy Consumption After Completion: " + totalEnergyConsumption);
+            Console.WriteLine("Total Execution Time: " + totalExecutionTime);
+            Console.WriteLine("IDLE % TIME IN THE SYSTEM: " + (100 * (float)idleTime / 1000) + "%\n");
+
+
+
         }
 
 
