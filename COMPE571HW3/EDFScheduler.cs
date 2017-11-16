@@ -34,7 +34,7 @@ namespace COMPE571HW3
             var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
 
             //Formats task data in usable format.
-            var taskList = TaskScheduler.GetData(data, timeToExecute);
+            var taskList = TaskScheduler.GetData(data);
 
             //Schedules all tasks in the system
             int []arrayEDFSchedule = scheduleEDF(taskList, numberOfTasks, timeToExecute);
