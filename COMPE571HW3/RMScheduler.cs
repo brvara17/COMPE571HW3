@@ -79,7 +79,7 @@ namespace COMPE571HW3
             return TaskList;
         }
 
-        private int[] scheduleRM(List<List<int>> taskList, int timeToExecute)
+        public int[] scheduleRM(List<List<int>> taskList, int timeToExecute)
         {
             //int[] edfSchedule = new int[timeToExecute];
             var rmSchedule = new int[timeToExecute];
