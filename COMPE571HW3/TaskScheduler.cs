@@ -9,11 +9,26 @@ namespace COMPE571HW3
 {
     class TaskScheduler
     {
-        static void Main(string[] textFile)
+        static void Main(string[] args)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "EDF EE";
-            textFile = System.IO.File.ReadAllLines(@"input2.txt");
+            //string schedulerType = "EDF EE";
+            // textFile = System.IO.File.ReadAllLines(@"input2.txt");
+
+            //Take in arguments from command line accordingingly
+            string[] textFile;
+            string schedulerType;
+            
+            if (args.Length > 2)
+            {
+                schedulerType = args[1] + " " + args[2];
+                textFile = System.IO.File.ReadAllLines(@args[0]);
+            }
+            else
+            {
+                schedulerType = args[1];
+                textFile = System.IO.File.ReadAllLines(@args[0]);
+            }
 
             //Used to hold all data from input file.
             List<List<string>> data = new List<List<string>>();
@@ -82,7 +97,6 @@ namespace COMPE571HW3
             
             EDFScheduler EDFTask = new EDFScheduler();
             EDFTask.EDFAnalysis(data);
-            Console.WriteLine("Schedule EDF: ");
             
 
         }
@@ -93,7 +107,6 @@ namespace COMPE571HW3
 
             RMScheduler RMTask = new RMScheduler();
             RMTask.RMAnalysis(data);
-            Console.WriteLine("Schedule RM: ");
 
         }
 
@@ -103,7 +116,6 @@ namespace COMPE571HW3
 
             EDFEEScheduler EDFEETask = new EDFEEScheduler();
             EDFEETask.EDFEEAnalysis(data);
-            Console.WriteLine("Schedule EDF EE: ");
 
 
         }

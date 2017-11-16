@@ -309,9 +309,9 @@ namespace COMPE571HW3
                }
             }
 
-            Console.WriteLine("Total Energy Consumption = " + totalEnergyConsumption + "J");
-            Console.WriteLine("Percent Idle Time vs Total Time = " + totalIdleTime / timeToExecute + "%");
-            Console.WriteLine("Total Execution Time = " + timeToExecute + " seconds");
+            Console.WriteLine("\nTotal Energy Consumption = " + totalEnergyConsumption + "J");
+            Console.WriteLine("Percent Idle Time = " + totalIdleTime / timeToExecute + "%");
+            Console.WriteLine("Total Execution Time = " + timeToExecute + " seconds\n");
         }
 
 
