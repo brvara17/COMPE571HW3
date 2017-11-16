@@ -11,7 +11,7 @@ namespace COMPE571HW3
        public void EDFEEAnalysis(List<List<string>> data)
             {
             //GetCombinationSample();
-            TaskScheduler.GetData(data);
+            //TaskScheduler.GetData(data);
             //FindCombinations(data);
             Console.WriteLine("Running EDF Analysis:");
 
@@ -37,10 +37,10 @@ namespace COMPE571HW3
             var timeToExecute = Convert.ToInt32(generalTaskInformaion[1]);
 
             //Formats task data in usable format.
-            var taskList = TaskScheduler.GetData(data);
+           // var taskList = TaskScheduler.GetData(data);
 
             //Schedules all tasks in the system
-            int[] arrayEDFSchedule = this.scheduleEDF(taskList, numberOfTasks, timeToExecute);
+          //  int[] arrayEDFSchedule = this.scheduleEDF(taskList, numberOfTasks, timeToExecute);
 
         }
        

@@ -12,7 +12,7 @@ namespace COMPE571HW3
         static void Main(string[] textFile)
         {
             //Comment these two lines out for running program from command line
-            string schedulerType = "EDF";
+            string schedulerType = "RM";
             textFile = System.IO.File.ReadAllLines(@"input.txt");
 
             //Used to hold all data from input file.
@@ -47,7 +47,14 @@ namespace COMPE571HW3
                     }
                 case "RM":
                     {
-                        ScheduleRM(data);
+                        if (CheckRM(data))
+                        {
+                            ScheduleRM(data);
+                        }
+                        else
+                        {
+                            Console.WriteLine("RM cannot be scheduled.");
+                        }
                         break;
                     }
                 case "EDF EE":
@@ -147,6 +154,27 @@ namespace COMPE571HW3
 
             //If sum <=1 then the EDF cannot be scheduled
             if (sum <= 1)
+                return true;
+            else
+                return false;
+
+        }
+        public static bool CheckRM(List<List<string>> data)
+        {
+            double sum = 0;
+            double numOfTasks = Convert.ToDouble(data[0][0]);
+            double utilization = 0;
+
+            for (int i = 1; i < data.Count; i++)
+            {
+                List<string> s = data[i];
+                sum += Convert.ToDouble(s[2]) / Convert.ToDouble(s[1]);
+            }
+
+            utilization =  numOfTasks * ((Math.Pow(2, 1 / numOfTasks)) - 1);
+
+            //If sum <=1 then the RM cannot be scheduled
+            if (sum <= utilization)
                 return true;
             else
                 return false;
