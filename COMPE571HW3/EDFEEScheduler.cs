@@ -20,9 +20,10 @@ namespace COMPE571HW3
         public void EDFEEAnalysis(List<List<string>> data)
             {
             //GetCombinationSample();
-            TaskScheduler.GetData(data);
+            timeToExecute = Convert.ToInt32(data[0][1]);
+            TaskScheduler.GetData(data, timeToExecute);
             //FindCombinations(data);
-            Console.WriteLine("Running EDF Analysis:");
+            Console.WriteLine("Running EDF EE Analysis:");
 
             //Storing relevant General information for the system in the generalTaskInformation var
             //Has <# of tasks> <amount of time to execute in seconds> 
@@ -41,7 +42,7 @@ namespace COMPE571HW3
                 listCPUPowerPerTask.Add(ls.GetRange(2, 4).ConvertAll(int.Parse));
             }
             listCPUPowerPerTask.Add(generalTaskInformation.GetRange(2, 4).ConvertAll(int.Parse));
-            var taskList = TaskScheduler.GetData(data);
+            var taskList = TaskScheduler.GetData(data, timeToExecute);
             
             //Number of tasks and Time to execute to be used in scheduling
             //Defined as time to execute
