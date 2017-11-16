@@ -24,7 +24,7 @@ namespace COMPE571HW3
             var generalTaskInformaion = data[0];
             Console.WriteLine("ALL DATA   = " + generalTaskInformaion[0]);
 
-            Console.WriteLine("totalTasks = " + generalTaskInformaion[0]);
+            Console.WriteLine("Total Tasks = " + generalTaskInformaion[0]);
             data.RemoveAt(0);
 
             //Finding hyper period of all tasks in the system
@@ -37,9 +37,9 @@ namespace COMPE571HW3
             int[] scheduleArray = scheduleRM(taskList);
             PrintEDFSchedule(scheduleArray, 1000);
 
-            Console.Write(" Task List 0 of 0 =  " + taskList[0][1]);
+            //Console.Write(" Task List 0 of 0 =  " + taskList[0][1]);
 
-            Console.WriteLine("finishedScheduler");
+            Console.WriteLine("Finished Scheduler");
         }
 
         /// <summary>
